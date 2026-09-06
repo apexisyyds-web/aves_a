@@ -11,6 +11,7 @@ class Album4GridPreviewSimple extends StatelessWidget {
   final bool showPlayIconForVideo;
   final VoidCallback? onTap;
   final Object? heroTag;
+  final ValueNotifier<bool>? cancellableNotifier;
 
   const Album4GridPreviewSimple({
     super.key,
@@ -20,6 +21,7 @@ class Album4GridPreviewSimple extends StatelessWidget {
     this.showPlayIconForVideo = true,
     this.onTap,
     this.heroTag,
+    this.cancellableNotifier,
   });
 
   @override
@@ -42,7 +44,7 @@ class Album4GridPreviewSimple extends StatelessWidget {
                 isMosaic: false,
                 progressive: true,
                 heroTag: heroTag != null ? '${heroTag}_$i' : null,
-                cancellableNotifier: ValueNotifier<bool>(false),
+                cancellableNotifier: cancellableNotifier,
                 fit: BoxFit.cover,
                 showLoadingBackground: true,
               ),
