@@ -80,17 +80,17 @@ class Album4GridPreviewSimple extends StatelessWidget {
       children: [
         Row(
           children: [
-            SizedBox(width: tileExtent, height: tileExtent, child: tileForIndex(0)),
+            SizedBox(key: const Key('album_tile_0'), width: tileExtent, height: tileExtent, child: tileForIndex(0)),
             SizedBox(width: gap),
-            SizedBox(width: tileExtent, height: tileExtent, child: tileForIndex(1)),
+            SizedBox(key: const Key('album_tile_1'), width: tileExtent, height: tileExtent, child: tileForIndex(1)),
           ],
         ),
         SizedBox(height: gap),
         Row(
           children: [
-            SizedBox(width: tileExtent, height: tileExtent, child: tileForIndex(2)),
+            SizedBox(key: const Key('album_tile_2'), width: tileExtent, height: tileExtent, child: tileForIndex(2)),
             SizedBox(width: gap),
-            SizedBox(width: tileExtent, height: tileExtent, child: tileForIndex(3)),
+            SizedBox(key: const Key('album_tile_3'), width: tileExtent, height: tileExtent, child: tileForIndex(3)),
           ],
         ),
       ],
