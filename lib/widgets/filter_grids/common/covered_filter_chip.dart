@@ -22,6 +22,7 @@ import 'package:aves/utils/android_file_utils.dart';
 import 'package:aves/widgets/common/extensions/build_context.dart';
 import 'package:aves/widgets/common/identity/aves_filter_chip.dart';
 import 'package:aves/widgets/common/thumbnail/image.dart';
+import 'package:aves/widgets/album_4grid_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -182,11 +183,7 @@ class CoveredFilterChip<T extends CollectionFilter> extends StatelessWidget {
                     );
                   },
                 )
-              : ThumbnailImage(
-                  entry: entry,
-                  extent: thumbnailExtent,
-                  devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
-                ),
+              : _buildAlbumPreview(context, source, _filter),
         ),
       ),
       banner: banner,
@@ -237,6 +234,34 @@ class CoveredFilterChip<T extends CollectionFilter> extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildAlbumPreview(BuildContext context, CollectionSource source, CollectionFilter _filter) {
+    // try to render a 2x2 preview when we have multiple entries in the album
+    if (_filter is StoredAlbumFilter) {
+      final albumPath = _filter.album;
+      final entries = source.visibleEntries.where((e) => e.directory == albumPath).take(4).toList();
+      if (entries.length > 1) {
+        return Album4GridPreviewSimple(
+          entries: entries,
+          extent: thumbnailExtent,
+          gap: 1.0,
+          showPlayIconForVideo: true,
+          onTap: onTap,
+        );
+      }
+    }
+
+    // fallback to single thumbnail
+    final singleEntry = _filter is StoredAlbumFilter && vaults.isLocked((_filter).album) ? null : source.coverEntry(_filter);
+    if (singleEntry != null) {
+      return ThumbnailImage(
+        entry: singleEntry,
+        extent: thumbnailExtent,
+        devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
+      );
+    }
+    return const SizedBox();
   }
 
   Widget _buildDetailIcon(BuildContext context, IconData icon, {double? padding}) {
